@@ -14,11 +14,19 @@ import {
   AlertIcon,
   Link as ChakraLink
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
+
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    const validation = document.cookie.split(';').map(i => i.trim() ).find((row) => row.startsWith('info='))?.split('=')[1];
+    if(  typeof validation === 'string' && validation !== '' ){ navigate("/dashboard") }
+  },[])
+
   return (
     <Box height="100vh">
       <Link to="/">
@@ -35,17 +43,17 @@ function Login() {
         right="0"
         display="flex"
         alignItems="center"
-        width={theme.sizes.md}
+        maxWidth={theme.sizes.md}
       >
-        <LoginForm />
+        <LoginForm navigate={navigate} />
       </Container>
     </Box>
   );
 }
 
-function LoginForm() {
+function LoginForm({navigate}) {
   const dataFormat = { username: "", password: "" };
-  const navigate = useNavigate();
+  
   const [form, setForm] = useState(dataFormat);
   const [error, handleError] = useState();
   const [btnStatus, setBtnStatus] = useState(false);
@@ -60,7 +68,9 @@ function LoginForm() {
         form
       );
       document.cookie = `info=${data.token}`;
+      axios.defaults.headers.common['Authorization'] = data.token
       navigate("/dashboard");
+
     } catch (error) {
       handleError(error?.response.data);
     } finally {

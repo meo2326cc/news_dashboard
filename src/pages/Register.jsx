@@ -12,12 +12,11 @@ import {
     theme,
     Alert,
     AlertIcon,
-    Link as ChakraLink,
     Text
   } from "@chakra-ui/react";
   import { useRef, useState } from "react";
   import axios from "axios";
-  import { useNavigate, Link } from "react-router-dom";
+  import { Link } from "react-router-dom";
   
   function Register() {
     return (
@@ -36,7 +35,7 @@ import {
           right="0"
           display="flex"
           alignItems="center"
-          width={theme.sizes.md}
+          maxWidth={theme.sizes.md}
         >
           <LoginForm />
         </Container>

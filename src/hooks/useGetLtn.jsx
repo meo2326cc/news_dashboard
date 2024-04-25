@@ -14,7 +14,7 @@ export const useGetLtn = () => {
           "Content-Type":"applacation/json"
         }
       } );
-      console.log('get-pts-data')
+      console.log('get-ltn-data')
       return data;
     },
   });

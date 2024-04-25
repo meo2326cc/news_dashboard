@@ -2,32 +2,37 @@ import{ UserNav } from "../components/Nav"
 import { Box } from "@chakra-ui/react"
 import Sidebar from "../components/Sidebar.jsx"
 import Articles from '../components/Articles.jsx'
-import { useEffect } from "react"
+import { useState , useEffect } from "react"
+import {SearchContext} from '../components/searchQueryStore.js'
 import { useNavigate } from "react-router-dom"
-import { useGetData } from "../hooks/useGetData"
 import axios from "axios"
+
 
 
 function Dashboard(){
 
-    const validation = document.cookie.split(';').find((row) => row.startsWith('info='))?.split('=')[1];
+    const validation = document.cookie.split(';').map( i => i.trim() ).find((row) => row.startsWith('info='))?.split('=')[1];
     axios.defaults.headers.common['Authorization'] = validation
     const navigate = useNavigate()
-    const { data, isPending } = useGetData()
+    const [ searchQuery , setSearchQuery ] = useState('')
+
     // 路由保護
     useEffect(()=>{
-        if(validation === undefined){
+        if(validation === undefined  || validation === '' ){
             navigate('/')
         }
-    },[])
+    },[validation])
 
-    return (<Box height='100vh'>
+    return (
+    <SearchContext.Provider value={ {searchQuery , setSearchQuery} }>
+    <Box height='100vh'>
     <UserNav/>
     <Box display='flex' position='absolute' top='74px' bottom='0' left='0' right='0' >
-        <Sidebar/>
+        <Sidebar displayOnMobile={'none'}/>
         <Articles/>
     </Box> 
     </Box>
+    </SearchContext.Provider>
 )
 }
 

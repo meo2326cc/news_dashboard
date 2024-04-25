@@ -9,6 +9,9 @@ import {
     DrawerContent,
     Button,
     useToast,
+    FormControl,
+    FormHelperText,
+    FormErrorMessage,
     Link as ChakraLink,
   } from '@chakra-ui/react'
   import { useMutation , useQueryClient } from '@tanstack/react-query'
@@ -19,6 +22,7 @@ import { toastSuccess ,toastError } from './ToastMsg'
   export default function Modal({status , select }) {
     const queryClient = useQueryClient()
     const [ note , setNote ] = useState({title:'' , url:'' , note:select.data.note })
+    const [ noteStatus , setNoteStatus ] = useState(false)
     const { isOpen, onClose } = status
     const toast = useToast()
     const formSub = async()=>{
@@ -38,6 +42,19 @@ import { toastSuccess ,toastError } from './ToastMsg'
       onSettled: ()=>{ toast( toastSuccess( '新增編輯清單成功' ) ) }
     })
 
+    //form actions
+    const watchForm = (e)=>{setNote({...note , note:e.target.value }) ; note.note !=='' && setNoteStatus(false) }
+    const cancel = ()=>{  onClose() ; setNoteStatus(false) }
+    const submit = ()=>{ 
+      if ( note.note === '' ){
+        setNoteStatus(true)
+      }else{
+        mutateAsync() ; 
+        setNoteStatus(false)
+        onClose() 
+      }
+      }
+
     useEffect(()=>{
       setNote({note:select.data.note , title:select.data.title , url: select.data.url })
     },[select])
@@ -54,14 +71,22 @@ import { toastSuccess ,toastError } from './ToastMsg'
           <DrawerHeader>{select.data.title}</DrawerHeader>
             <DrawerBody>
               <Text mb='6'>新聞連結：<ChakraLink href={select.data.url} target='_blank'>{select.data.url} </ChakraLink></Text>
-              <Textarea value={note.note} onChange={(e)=>setNote({...note , note:e.target.value })} size='lg' rows='15'/>
+              <FormControl isInvalid={noteStatus}>
+              <Textarea value={note.note} onChange={watchForm}  size='lg' rows='15'/>           
+              {!noteStatus ? (
+        <FormHelperText>
+          備忘筆記
+        </FormHelperText>
+      ) : (
+        <FormErrorMessage>筆記請不要空白</FormErrorMessage>
+      )}     
+              </FormControl>
             </DrawerBody>
-  
             <DrawerFooter>
-              <Button variant='outline' mr={3} onClick={onClose}>
+              <Button variant='outline' mr={3} onClick={cancel}>
                 取消
               </Button>
-              <Button onClick={()=>{mutateAsync() ; onClose() }} colorScheme='blue'>保存</Button>
+              <Button onClick={submit} colorScheme='blue'>保存</Button>
             </DrawerFooter>
           </DrawerContent>
         </Drawer>

@@ -15,7 +15,7 @@ export const useGetCna = (  ) => {
         }
       } );
       console.log('get-cna-data')
-      return data;
+      return data.map( item => ({ ...item , url:'https://www.cna.com.tw' + item.url }) );
     },
   });
 };

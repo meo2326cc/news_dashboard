@@ -15,7 +15,8 @@ export const useGetCts = (   ) => {
         }
       } );
       console.log('get-cts-data')
-      return data;
+
+      return data.slice(0,16)
     },
   });
 };

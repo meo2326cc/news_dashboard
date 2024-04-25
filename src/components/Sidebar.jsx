@@ -1,7 +1,7 @@
-import { useColorModeValue , Box , List , ListItem , Accordion , AccordionItem , AccordionIcon , AccordionPanel , AccordionButton , Stack , Skeleton , Text, Button, theme, Tooltip , useDisclosure ,useToast } from "@chakra-ui/react"
+import { useColorModeValue , Box , List , ListItem , Accordion , AccordionItem , AccordionIcon , AccordionPanel , AccordionButton , Stack , Skeleton , Text, Button, theme, Tooltip , useDisclosure ,useToast, Center } from "@chakra-ui/react"
 import { useMutation , useQueryClient } from "@tanstack/react-query";
 import { useGetData } from "../hooks/useGetData";
-import { toastSuccess } from "./ToastMsg";
+import { toastError, toastSuccess } from "./ToastMsg";
 import Modal from "./Modal";
 import IsLoadingSpinner from "../components/IsLoadingSpinner"
 import { useContext  , createContext , useState } from "react";
@@ -9,13 +9,13 @@ import axios from "axios";
 
 const SelectContext = createContext();
 
-function Sidebar(){
+function Sidebar({displayOnMobile}){
     const sidebarBg = useColorModeValue( 'gray.50' , 'gray.900' )
     const status = useDisclosure()
     const [loading , setLoading] = useState(false)
     const [select , setSelect] = useState({  reqType:'' , listType:'' , data :{title:'' , url: '' , note:''} })
     return (<SelectContext.Provider value={{select , setSelect , status , setLoading }}>
-    <Box position='relative' alignSelf='stretch' width='380px' overflow='auto'  bg={sidebarBg} display={{base: 'none' , md:'block' }}>
+    <Box position='relative' alignSelf='stretch' width='380px' overflow='auto' pe='4'  bg={sidebarBg} display={{base: displayOnMobile , md:'block' }}>
         <Folder/>
         { loading && <IsLoadingSpinner/>}
     </Box>
@@ -28,12 +28,14 @@ function Sidebar(){
 
 
 function Folder () {
-  // const queryClient = useQueryClient();
-  // const todosData = queryClient.getQueryData(["todos"])
-  // console.log(todosData)
 
-  //const validation = document.cookie.split(';').find((row) => row.startsWith('info='))?.split('=')[1];
-  const { data, isPending } = useGetData()
+  const { data, isPending , error } = useGetData()
+  const toast = useToast()
+
+    if (error){
+      toast( toastError('載入個人資料失敗') )
+      return <Center position='relative' top='50%' transform='translateY(-50%)'>連接伺服器失敗，請稍後再試</Center>
+    }
 
     return(<Accordion defaultIndex={[0,1]} allowMultiple width='100%'>
         <AccordionItem border='0'>
@@ -79,6 +81,7 @@ function FolderList({data , listType}) {
       queryClient.invalidateQueries({queryKey:["todos"]})
       delToast(toastSuccess( '刪除成功' ) )
      },
+     onError:()=>{ delToast( toastError('刪除失敗') ) },
      onSettled:()=>{
       setLoading(false)
      }
@@ -108,9 +111,9 @@ function FolderList({data , listType}) {
 
 function IsLoading(){
     return(<Stack ps='8'>
-        <Skeleton height='32px' mb='4' />
-        <Skeleton height='32px' mb='4' />
-        <Skeleton height='32px' mb='4' />
+        {Array.from( {length:3} , (_,index)=>{
+          return <Skeleton key={index} height='24px'mb='1' />
+        } )}
       </Stack>)
 }
 
