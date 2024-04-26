@@ -5,6 +5,7 @@ import Articles from '../components/Articles.jsx'
 import { useState , useEffect } from "react"
 import {SearchContext} from '../components/searchQueryStore.js'
 import { useNavigate } from "react-router-dom"
+import { supportDvh } from "../components/layout/support.js"
 import axios from "axios"
 
 
@@ -25,7 +26,7 @@ function Dashboard(){
 
     return (
     <SearchContext.Provider value={ {searchQuery , setSearchQuery} }>
-    <Box height='100vh'>
+    <Box style={supportDvh()}>
     <UserNav/>
     <Box display='flex' position='absolute' top='74px' bottom='0' left='0' right='0' >
         <Sidebar displayOnMobile={'none'}/>

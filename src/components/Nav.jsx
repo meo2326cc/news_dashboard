@@ -67,8 +67,9 @@ export function UserNav() {
 
 
 export function Nav() {
+  const btnBg = useColorModeValue("white", "#1a202c");
   return (
-    <nav>
+    <nav style={{position:'sticky', width:'100%',top:0 , backgroundColor:btnBg }}>
     <Box
       borderBottomWidth='1px' py="4">
       <Container display="flex"alignItems="center"justifyContent="space-between "  maxW={{base:theme.sizes.container.lg, xl:theme.sizes.container.xl}}>
@@ -112,9 +113,6 @@ const handleCollapseAction = ( e ) => {
   document.cookie = `${name}=${action===false?1:0}`
   setIschecked( action )
 }
-
-console.log(handleCollapseStatus( collapseType , name ))
-
   return (<Switch colorScheme="green" isChecked={ Ischecked } onChange={ handleCollapseAction } /> )
 }
 

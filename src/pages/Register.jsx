@@ -17,10 +17,10 @@ import {
   import { useRef, useState } from "react";
   import axios from "axios";
   import { Link } from "react-router-dom";
-  
+  import { supportDvh } from "../components/layout/support.js"
   function Register() {
     return (
-      <Box height="100vh">
+      <Box style={supportDvh}>
         <Link to="/">
           <Heading as="h2" size="md" p="4">
             {" "}
