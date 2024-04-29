@@ -20,7 +20,7 @@ import {
   import { supportDvh } from "../components/layout/support.js"
   function Register() {
     return (
-      <Box style={supportDvh}>
+      <Box style={supportDvh()}>
         <Link to="/">
           <Heading as="h2" size="md" p="4">
             {" "}

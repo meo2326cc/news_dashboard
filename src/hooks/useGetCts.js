@@ -14,9 +14,8 @@ export const useGetCts = (   ) => {
           "Content-Type":"applacation/json"
         }
       } );
-      console.log('get-cts-data')
-
-      return data.slice(0,16)
+      return data
     },
+    staleTime:Infinity
   });
 };

@@ -86,7 +86,7 @@ import { toastSuccess ,toastError } from './ToastMsg'
               <Button variant='outline' mr={3} onClick={cancel}>
                 取消
               </Button>
-              <Button onClick={submit} colorScheme='blue'>保存</Button>
+              <Button onClick={submit} colorScheme='yellow'>保存</Button>
             </DrawerFooter>
           </DrawerContent>
         </Drawer>

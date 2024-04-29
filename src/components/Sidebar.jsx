@@ -84,8 +84,7 @@ function FolderList({data , listType}) {
      onError:()=>{ delToast( toastError('刪除失敗') ) },
      onSettled:()=>{
       setLoading(false)
-     }
-     
+     }  
   })
 
   if( data[0] === undefined ) {

@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-export const useGetData = (  ) => {
+export const useGetLtn = () => {
   //const queryClient = useQueryClient();
   return useQuery({
-    queryKey: ["todos"],
+    queryKey: ["ltn"],
     queryFn: async () => {
       const { data } = await axios(
-        `${import.meta.env.VITE_PATH_BASE_URL}/user/userdata`
+        `${import.meta.env.VITE_PATH_BASE_URL}/news/ltn`
       , {
         method:'get',
         headers:{
@@ -14,9 +14,9 @@ export const useGetData = (  ) => {
           "Content-Type":"applacation/json"
         }
       } );
-      console.log('get-data')
+      console.log('get-ltn-data')
       return data;
     },
-    
+    staleTime:Infinity
   });
 };

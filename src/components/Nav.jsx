@@ -21,9 +21,9 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import SidebarMobile from "./SidebarMobile";
-import { useContext, useEffect, useRef, useState } from "react";
-import { SearchContext } from "./searchQueryStore";
+import { useContext , useEffect, useRef, useState } from "react";
 import { useMutation , useQueryClient } from "@tanstack/react-query";
+import { SearchContext } from "./searchQueryStore";
 import collapseType from "./collapseType";
 import { useNavigate } from "react-router-dom";
 import { toastSuccess } from "./ToastMsg";
@@ -69,7 +69,7 @@ export function UserNav() {
 export function Nav() {
   const btnBg = useColorModeValue("white", "#1a202c");
   return (
-    <nav style={{position:'sticky', width:'100%',top:0 , backgroundColor:btnBg }}>
+    <nav style={{position:'sticky', width:'100%',top:0 , backgroundColor:btnBg , zIndex:100 }}>
     <Box
       borderBottomWidth='1px' py="4">
       <Container display="flex"alignItems="center"justifyContent="space-between "  maxW={{base:theme.sizes.container.lg, xl:theme.sizes.container.xl}}>
@@ -166,6 +166,9 @@ function Setting () {
             <Box>預設顯示版面：</Box>
           </ListItem>
           <ListItem borderLeftWidth='1px' ps='4' ms='2' py='3' display='flex' alignItems='center' justifyContent='space-between'>
+            <Box >關鍵字分析</Box> <CollapseTypeBtn name={'keywords'} />
+          </ListItem>
+          <ListItem borderLeftWidth='1px' ps='4' ms='2' py='3' display='flex' alignItems='center' justifyContent='space-between'>
             <Box >自由時報</Box> <CollapseTypeBtn name={'ltn'} />
           </ListItem>
           <ListItem borderLeftWidth='1px' ps='4' ms='2' py='3' display='flex' alignItems='center' justifyContent='space-between'>
@@ -186,42 +189,48 @@ function Setting () {
 
 function Search () {
 
-  const { searchQuery , setSearchQuery } = useContext(SearchContext)
-  const queryClient = useQueryClient()
-  const originQueryData = useRef()
-  const data = {}
-  data.ltnData  = queryClient.getQueryData(['ltn'])
-  data.ctsData  = queryClient.getQueryData(['cts'])
-  data.cnaData  = queryClient.getQueryData(['cna'])
+  const { mutate , search , setSearch } = useContext(SearchContext)
+
+  //const queryClient = useQueryClient()
+  //const originQueryData = useRef()
+
+  // const data = {}
+  // data.ltnData  = queryClient.getQueryData(['ltn'])
+  // data.ctsData  = queryClient.getQueryData(['cts'])
+  // data.cnaData  = queryClient.getQueryData(['cna'])
   
 
-  useEffect(()=>{
-    if( JSON.stringify(data) !== '{}' && originQueryData.current === undefined ){
-      originQueryData.current = data
-    }
-  },[data])
+  // useEffect(()=>{
+  //   if( JSON.stringify(data) !== '{}' && originQueryData.current === undefined ){
+  //     originQueryData.current = data
+  //   }
+  // },[data])
 
-  const { mutate } = useMutation({ 
-      mutationFn: ()=> { 
+  // const { mutate } = useMutation({ 
+  //     mutationFn: (value)=> { 
 
-        const res = {}
+  //       const res = {}
         
-        res.ltnData = originQueryData.current.ltnData.filter( item => item.title.includes(searchQuery) )
-        res.ctsData = originQueryData.current.ctsData.filter( item => item.title.includes(searchQuery) )
-        res.cnaData = originQueryData.current.cnaData.filter( item => item.title.includes(searchQuery) )
+  //       res.ltnData = originQueryData.current.ltnData.filter( item => item.title.includes(value) )
+  //       res.ctsData = originQueryData.current.ctsData.filter( item => item.title.includes(value) )
+  //       res.cnaData = originQueryData.current.cnaData.filter( item => item.title.includes(value) )
 
-        return res
-      }, 
-      onSuccess : (res) => { 
-      queryClient.setQueryData( ["ltn"] , res.ltnData ) ;
-      queryClient.setQueryData( ["cts"] , res.ctsData ) ;
-      queryClient.setQueryData( ["cna"] , res.cnaData ) ;
-    }
+  //       return res
+  //     }, 
+  //     onSuccess : (res) => { 
+  //     queryClient.setQueryData( ["ltn"] , res.ltnData ) ;
+  //     queryClient.setQueryData( ["cts"] , res.ctsData ) ;
+  //     queryClient.setQueryData( ["cna"] , res.cnaData ) ;
+  //   }
 
-  })
+  // })
+
 
   return( <Box me='4'>
-    <Input placeholder='搜尋' onChange={ (e)=>{ setSearchQuery( e.target.value ) ; mutate() } } />
+    { search === '' ? <Input placeholder='搜尋' defaultValue={search} onChange={ (e)=>{ mutate( e.target.value )} } /> :
+    <Button colorScheme="red" onClick={ ()=>{ mutate('') ; setSearch('') } }>清除關鍵字</Button>
+    }
+    
   </Box> )
 }
 

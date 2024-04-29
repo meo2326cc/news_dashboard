@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-export const useGetCna = (  ) => {
+export const useGetData = (  ) => {
   //const queryClient = useQueryClient();
   return useQuery({
-    queryKey: ["cna"],
+    queryKey: ["todos"],
     queryFn: async () => {
       const { data } = await axios(
-        `${import.meta.env.VITE_PATH_BASE_URL}/news/cna`
+        `${import.meta.env.VITE_PATH_BASE_URL}/user/userdata`
       , {
         method:'get',
         headers:{
@@ -14,8 +14,11 @@ export const useGetCna = (  ) => {
           "Content-Type":"applacation/json"
         }
       } );
-      console.log('get-cna-data')
-      return data.map( item => ({ ...item , url:'https://www.cna.com.tw' + item.url }) );
+      console.log('get-data')
+      return data;
     },
+    staleTime:Infinity
+    
+    
   });
 };

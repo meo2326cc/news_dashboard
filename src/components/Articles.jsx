@@ -1,34 +1,45 @@
-import { Box , Wrap , WrapItem , Card , CardBody, Button ,Tooltip, Link as ChakraLink , Accordion ,AccordionItem , AccordionButton , AccordionIcon ,AccordionPanel, Heading , Skeleton , useDisclosure , useToast , Text } from "@chakra-ui/react"
+import { Box , Wrap , WrapItem , Card , CardBody, Button ,Tooltip, Link as ChakraLink , Accordion ,AccordionItem , AccordionButton , AccordionIcon ,AccordionPanel, Heading , Skeleton , useDisclosure , useToast , Text, Container , theme } from "@chakra-ui/react"
 import { useGetLtn } from "../hooks/useGetLtn"
 import { useGetCna } from "../hooks/useGetCna"
 import { useGetCts } from "../hooks/useGetCts"
 import Modal from "./Modal"
 import { toastError, toastSuccess } from "./ToastMsg"
 import IsLoadingSpinner from "./IsLoadingSpinner"
-import { useState  } from "react"
+import { useState , useContext } from "react"
+import { SearchContext } from "./searchQueryStore.js"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import collapseType from "../components/collapseType.js"
+import { Analysis } from "./Analysis.jsx"
+
 export default function Articles() {
-    console.log('article')
-    return(<Box overflow="auto" width='100%'>
-    <ArticleBox name={'自由時報'} > 
-      <Item hook={useGetLtn}/>
-    </ArticleBox>
-    <ArticleBox name={'中央社'} >
-      <Item hook={useGetCna}/>
-    </ArticleBox>
-    <ArticleBox name={'華視'} >
-      <Item hook={useGetCts}/>
-    </ArticleBox>
-    </Box>)
+  const { search } = useContext(SearchContext);
+  return (
+    <Box overflow="auto" width="100%">
+      <Box display={search === "" ? "block" : "none"}>
+        <ArticleBox name={"關鍵字分析"}>
+          <Analysis />
+        </ArticleBox>
+      </Box>
+      <ArticleBox name={"自由時報"}>
+        <Item hook={useGetLtn} />
+      </ArticleBox>
+      <ArticleBox name={"中央社"}>
+        <Item hook={useGetCna} />
+      </ArticleBox>
+      <ArticleBox name={"華視"}>
+        <Item hook={useGetCts} />
+      </ArticleBox>
+    </Box>
+  );
 }
 
 function ArticleBox({ name , children  }) {
 
-  console.log(collapseType(name) === undefined ? 0 : collapseType(name) )
+  //console.log(collapseType(name) === undefined ? 0 : collapseType(name) )
 
   return (
+    <Container maxW={{base:theme.sizes.container.lg, xl:'1440px'}}>
     <Box overflow="auto" width="100%">
       <Accordion defaultIndex={[Number(collapseType(name) === undefined ? 0 : collapseType(name)) ]} allowMultiple>
         <AccordionItem border="0">
@@ -44,6 +55,7 @@ function ArticleBox({ name , children  }) {
         </AccordionItem>
       </Accordion>
     </Box>
+   </Container> 
   );
 }
 
@@ -104,9 +116,9 @@ function Item ({hook}) {
 
     return(<>
         <Wrap justify={ {base:'center' , lg: 'left'} }>
-        { data.map( (item , index ) => {
+        { data[0] === undefined ? <Box> 無資料 </Box> : data.map( (item , index ) => {
         return <WrapItem key={ index } position='relative' width={{base:'100%' , md:'fit-content'}} >
-                    <Card width={{base:'100%' , md: '280px'}} height='136px' >
+                    <Card width={{base:'100%' , md: '300px'}} height='136px' >
                         <CardBody display='flex' flexDirection='column' justifyContent='space-between'>
                             <Tooltip label={item.title}>
                                 <ChakraLink  fontWeight='bold' style={{display:"-webkit-box" , WebkitBoxOrient:'vertical' , WebkitLineClamp:2 , overflow:'hidden' , textOverflow:"ellipsis" }} href={item.url} target="_blank">{item.title}</ChakraLink>
