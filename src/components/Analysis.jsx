@@ -1,4 +1,4 @@
-import { Box , Wrap ,WrapItem , Card , CardBody , Text , useColorModeValue, Button , Center , OrderedList, ListItem , Tag, CardHeader , theme , Skeleton} from "@chakra-ui/react"
+import { Box , Card , CardBody , Text , useColorModeValue, Button , Center , OrderedList, ListItem , theme , Skeleton} from "@chakra-ui/react"
 import { useGetAnalysis } from "../hooks/useGetAnalysis"
 import { SearchContext } from "./searchQueryStore";
 import { useContext } from "react";
@@ -42,6 +42,11 @@ const options = {
     scales: {
     x: {
         stacked: true,
+        ticks:{
+          autoSkip: false, 
+          maxRotation: 90,
+          minRotation: 0
+        }
     },
     y: {
         stacked: true,
@@ -60,7 +65,8 @@ if(isPending){
 if(data) { 
     const labels = data.map( item => item.keyWord )
     const chartData = {
-        labels:labels ,
+        labels:labels,
+        borderColor:'#00ff00',
         datasets: [
           {
             label: '自由時報',
