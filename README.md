@@ -1,4 +1,4 @@
-# 新聞儀表板
+![網站demo1](https://github.com/meo2326cc/news_dashboard/assets/107049397/d4ab91a6-fc46-44c6-be66-49c911a29478)# 新聞儀表板
 使用 React 與 Chakra UI 製作的瀏覽新聞網頁 APP。
 對各大新聞版面進行自動化整理，並將關鍵字進行視覺化分析，使用者可以透過關鍵字馬上掌握最新趨勢，並使用內建的編輯功能儲存想看的新聞與撰寫筆記，透過搜尋功能搭配分析關鍵字也可以馬上找到不同家媒體的相關報導。
 
@@ -21,6 +21,14 @@
 ### 使用 TanStack Query 進行狀態管理 
 在本次專案中主要的資料請求在於`1.新聞資料` `2.使用者資料`這兩項，將其 API 路徑事先封裝至 hook 中再引入需要使用的元件中即可，剩下的 TanStack Query 會依據 queryKey 來進行狀態管理，並且可以直接用 `data` `isPending` 來直接讀取狀態，省下部分需要自行使用 useState 的麻煩。
 
+![網站demo1](https://github.com/meo2326cc/news_dashboard/assets/107049397/6fba4b8b-867f-4a22-9a29-1c2c426aea09)
+
+
 ### 跨元件資料
 - 在主要的儀表板畫面中分為左方使用者已儲存的資料與右方新聞的資料，透過對伺服器送出請求後可以直接統一進行更新資料。
 - 搜尋功能也可直接運用useQueryClient事先讀取資料，並使用useRef存取，避免搜尋框觸發onChange後元件重繪而無法取到原始新聞資料，之後將關鍵字與新聞資料進行比對改寫queryKey的資料來篩選。
+
+<img width="729" alt="截圖 2024-05-01 下午8 57 17" src="https://github.com/meo2326cc/news_dashboard/assets/107049397/3c4f190a-d6d9-40d9-8cc5-2a45f0614a13">
+
+![網站demo2](https://github.com/meo2326cc/news_dashboard/assets/107049397/5c82c668-8713-4dcc-b5d9-da955564b832)
+
