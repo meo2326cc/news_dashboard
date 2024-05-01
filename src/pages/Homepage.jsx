@@ -51,7 +51,7 @@ function Hero() {
   const colorMode = useColorModeValue( linearGradient.normal , linearGradient.dark )
   const switchPic = useColorModeValue( bgWhite , bgBlack )
   const switchDashPic = useColorModeValue(dashboardWhite ,dashboardBlack )
-  const boxShadow = useColorModeValue( '4px 4px 12px #b5b5b5' , '4px 4px 12px #141414' )
+  const boxShadow = useColorModeValue( '8px 8px 22px #b5b5b5' , '8px 8px 22px #141414' )
 
   return (
     <>
