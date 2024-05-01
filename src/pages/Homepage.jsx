@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Button , Heading , Container , useColorMode , useColorModeValue , Box , theme , Text , Image , Card, CardHeader , Tag , Tab , Tabs , TabList , TabPanels , TabPanel , Tooltip as CharkaTooltip } from '@chakra-ui/react'
+import {useState } from 'react'
+import { Button , Heading , Container ,  useColorModeValue , Box , theme , Text , Image , Card, Tag , Tab , Tabs , TabList , TabPanels , TabPanel , Tooltip as CharkaTooltip } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { Nav } from '../components/Nav'
 import '../../node_modules/aos/dist/aos.css'
@@ -62,7 +62,7 @@ function Hero() {
       <Heading mb='8' size='2xl' as='h1'>必備的新聞動態牆</Heading>
       <Link to='/login'><Button colorScheme='yellow' letterSpacing='2px' px='8'>馬上開始</Button></Link>    
       </Box>
-      <Card transform='perspective(1300px) rotateY(-10deg) scaleX(1.05)' left='-50px' display={{base:'none', md:'block'}} width='40%' boxShadow={boxShadow} overflow='hidden'><Image src={switchDashPic}/></Card>     
+      <Card transform='perspective(1300px) rotateY(-10deg) scaleX(1.05)' left='-50px' display={{base:'none', md:'block'}} width='40%' boxShadow={boxShadow} overflow='hidden'><Image alt='新聞動態牆' src={switchDashPic}/></Card>     
     </Container>
 
     <Box zIndex='-1' opacity='0.6' position='absolute' top='0' bottom='0' left='0' right='0' backgroundPosition='center' backgroundSize='cover' backgroundImage={`url(${switchPic})`}>
@@ -79,7 +79,7 @@ function Intro() {
         <Container maxW={{base:theme.sizes.container.lg, xl:theme.sizes.container.xl}} py='32'>
           <Heading textAlign='center' as='h2'mb='4' >瀏覽各家媒體政治版面，這一站就夠了</Heading>
           <Text textAlign='center' mb='6'>匯集各家新聞政治版面，翻找新聞不必每次都手忙腳亂，這邊幫您都整理好，圖卡式排版無論電腦還是手機都沒問題！</Text>
-          <Image m='auto' src={switchPic} />
+          <Image alt='瀏覽新聞動態' m='auto' src={switchPic} />
     </Container>
   </Box>)
 }
@@ -95,7 +95,7 @@ function Feature () {
           <Heading textAlign='center' as='h2'mb='20' >專為個人打造的特色功能</Heading>
 
           <Card position='relative' margin='auto' maxW='660px' boxShadow={boxShadow} overflow='hidden'>
-            <Image src={switchDashPic}/>
+            <Image alt='儀表板功能' src={switchDashPic}/>
             <CharkaTooltip label={dataSet[0].text}>
             <Tag boxShadow={boxShadow} colorScheme={tabIndex === 0 ? 'yellow' : 'gray' } position='absolute' right='25%' top='1.5%' size={{base:'sm' , md:'md'}} variant='solid'>{dataSet[0].name}</Tag>              
             </CharkaTooltip>
