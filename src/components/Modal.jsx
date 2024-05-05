@@ -1,6 +1,5 @@
 import {
     Textarea,
-    Text,
     Drawer,
     DrawerBody,
     DrawerFooter,
@@ -13,6 +12,13 @@ import {
     FormHelperText,
     FormErrorMessage,
     Link as ChakraLink,
+    Tabs,
+    Tab,
+    TabList,
+    TabPanels,
+    TabPanel,
+    Card,
+    Box
   } from '@chakra-ui/react'
   import { useMutation , useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
@@ -68,9 +74,26 @@ import { toastSuccess ,toastError } from './ToastMsg'
         >
           <DrawerOverlay />
           <DrawerContent>
-          <DrawerHeader>{select.data.title}</DrawerHeader>
+          <Tabs colorScheme='yellow' defaultIndex={select.defaultIndex}>
+          <TabList>
+          <Tab>瀏覽新聞</Tab>
+          <Tab>新聞備忘</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+          <DrawerHeader><ChakraLink href={select.data.url} target="_blank">{select.data.title} <Box as='span' fontSize='18px' className='material-icons'>open_in_new</Box>  </ChakraLink></DrawerHeader>
+          <DrawerBody >
+            {isOpen && <Frame url={select.data.url}/>}
+          </DrawerBody>
+          <DrawerFooter >
+              <Button variant='outline' onClick={cancel} width='100%'>
+                關閉
+              </Button>              
+          </DrawerFooter>
+          </TabPanel>
+          <TabPanel>
+          <DrawerHeader><ChakraLink href={select.data.url} target='_blank'>{select.data.title} <Box as='span' fontSize='18px' className='material-icons'>open_in_new</Box> </ChakraLink></DrawerHeader>
             <DrawerBody>
-              <Text mb='6'>新聞連結：<ChakraLink href={select.data.url} target='_blank'>{select.data.url} </ChakraLink></Text>
               <FormControl isInvalid={noteStatus}>
               <Textarea value={note.note} onChange={watchForm}  size='lg' rows='15'/>           
               {!noteStatus ? (
@@ -87,9 +110,33 @@ import { toastSuccess ,toastError } from './ToastMsg'
                 取消
               </Button>
               <Button onClick={submit} colorScheme='yellow'>保存</Button>
-            </DrawerFooter>
+            </DrawerFooter>            
+            </TabPanel>
+        </TabPanels>
+
+            </Tabs>
           </DrawerContent>
         </Drawer>
       </>
     )
   }
+
+  function Frame ({url}) {
+
+    function calcH () {
+    
+      if (!CSS.supports('height', '100dvh')) {
+        return `calc(100vh - 240px)`
+      }
+    
+      return `calc(100dvh - 240px)`
+    }
+
+    return(
+    <Card overflow='hidden'>
+    <iframe title={url} style={{height: calcH() }} src={url}>
+    </iframe>
+    </Card>)
+
+  }
+

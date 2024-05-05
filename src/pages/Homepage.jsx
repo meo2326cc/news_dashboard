@@ -196,7 +196,7 @@ function Footer() {
   const bg = useColorModeValue( theme.colors.yellow[400] , theme.colors.yellow[200] )
   return (<Box borderTop='2px' borderColor={bg}>
   <Container maxW={{base:theme.sizes.container.lg, xl:theme.sizes.container.xl}} py={theme.sizes[8]}>
-  <Text textAlign='center' >2024 © news-dashboard</Text>
+  <Text textAlign='center' >© 2024 news-dashboard</Text>
 </Container>
 
 </Box>)

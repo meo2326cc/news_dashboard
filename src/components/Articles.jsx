@@ -98,9 +98,21 @@ function Item ({hook}) {
         toast(toastSuccess('新增標記清單成功'))
       }
     })
+    const clickText = ( e , item )=>{
+      e.preventDefault();
+      setSelect( { listType:'editList' , reqType:'post', defaultIndex:0 , data:{ title:item.title , url:item.url , note:'' }});
+      status.onOpen();
+   }
+
+    const addFav = ( item , index )=>{ mutateAsync({ data:{ title:item.title , url: item.url , note:'' } , index:index } )}
+    const addEdit = ( item  )=>{
+      setSelect( { listType:'editList' , defaultIndex:1 , reqType:'post' , data:{ title:item.title , url:item.url , note:'' }})
+      status.onOpen()
+   }
+
     const validation = document.cookie.split(';').find((row) => row.startsWith('info='))?.split('=')[1];
     const { data , isPending , error } = hook(validation)
-    const [ select , setSelect ] = useState({  reqType:'' , listType:'' , data : {title:'' , url: '' , note:'' } })
+    const [ select , setSelect ] = useState({  reqType:'' , listType:'' , defaultIndex:0 , data : {title:'' , url: '' , note:'' } })
 
     if( error ) {
       console.log(error)
@@ -121,15 +133,14 @@ function Item ({hook}) {
                     <Card width={{base:'100%' , md: '300px'}} height='136px' >
                         <CardBody display='flex' flexDirection='column' justifyContent='space-between'>
                             <Tooltip label={item.title}>
-                                <ChakraLink  fontWeight='bold' style={{display:"-webkit-box" , WebkitBoxOrient:'vertical' , WebkitLineClamp:2 , overflow:'hidden' , textOverflow:"ellipsis" }} href={item.url} target="_blank">{item.title}</ChakraLink>
+                                <ChakraLink onClick={(e)=>{ clickText( e , item ) }} fontWeight='bold' style={{display:"-webkit-box" , WebkitBoxOrient:'vertical' , WebkitLineClamp:2 , overflow:'hidden' , textOverflow:"ellipsis" }}>{item.title}</ChakraLink>
                             </Tooltip>
                             <Box display='flex' alignItems='end' justifyContent='space-between' mt='4'>
                               <Box>
-                                <Button onClick={()=>{ mutateAsync({ data:{ title:item.title , url: item.url , note:'' } , index:index } )}} minWidth='0' height='0' py='4' px='2'><Box as='span' className="material-icons" verticalAlign='bottom' fontSize='md'>star</Box></Button>
-                                <Button onClick={()=>{
-                                    setSelect( { listType:'editList' , reqType:'post' , data:{ title:item.title , url:item.url , note:'' }})
-                                    status.onOpen()
-                                 }} minWidth='0' height='0' py='4' px='2' ms='4'><Box as='span' className="material-icons" verticalAlign='bottom' fontSize='md'>edit</Box></Button>                            
+                                {/* add favbtn */}
+                                <Button onClick={()=>{ addFav( item , index ) }} minWidth='0' height='0' py='4' px='2'><Box as='span' className="material-icons" verticalAlign='bottom' fontSize='md'>star</Box></Button>
+                                {/* add editbtn */}
+                                <Button onClick={()=>{ addEdit( item , index ) }} minWidth='0' height='0' py='4' px='2' ms='4'><Box as='span' className="material-icons" verticalAlign='bottom' fontSize='md'>edit</Box></Button>                            
                               </Box>
                                   <Text color='gray' fontSize='xs'>{item.date}</Text>  
                             </Box>
