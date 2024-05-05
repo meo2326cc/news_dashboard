@@ -56,10 +56,10 @@ import {
       e.preventDefault();
       setBtnStatus(true);
       try {
-        const { data } = await axios.post( `${import.meta.env.VITE_PATH_BASE_URL}/user/register` ,
+        await axios.post( `${import.meta.env.VITE_PATH_BASE_URL}/user/register` ,
           form
         );
-        document.cookie = `info=${data.token}`;
+        //document.cookie = `info=${data.token}`;
         //navigate("/dashboard");
         handleSuccess( true )
       } catch (error) {
